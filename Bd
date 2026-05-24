@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Zahuu 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- CORE DESIGN SYSTEM & GLOBAL STYLES --- */
+        :root {
+            --bg-color: #050508;
+            --text-main: #ffffff;
+            --text-muted: #a0a0b0;
+            --accent-1: #ff7eb3;
+            --accent-2: #ff758c;
+            --accent-3: #8a2387;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- CUSTOM CURSOR --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: var(--accent-1);
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(255, 126, 179, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* --- ANIMATED BACKGROUND (2026 Mesh Gradient Style) --- */
+        .bg-orbs {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: #000;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 {
+            width: 400px; height: 400px;
+            background: var(--accent-3);
+            top: -10%; left: -10%;
+        }
+        .orb-2 {
+            width: 500px; height: 500px;
+            background: var(--accent-1);
+            bottom: -20%; right: -10%;
+            animation-delay: -5s;
+        }
+        .orb-3 {
+            width: 300px; height: 300px;
+            background: var(--accent-2);
+            top: 40%; left: 40%;
+            animation-duration: 25s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(100px, 50px) scale(1.2); }
+            100% { transform: translate(-50px, 100px) scale(0.9); }
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+        
+        .title-gradient {
+            background: linear-gradient(to right, var(--accent-1), #ffb8d2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* --- SECTIONS & LAYOUT --- */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1.5s 0.5s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--text-muted);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1.5s 1s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeUp 1.5s 2s forwards, bounce 2s infinite 3s;
+        }
+        .scroll-indicator div {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--accent-1), transparent);
+        }
+
+        /* --- SCROLL ANIMATIONS (Intersection Observer classes) --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- GLASSMORPHISM CARDS --- */
+        .story-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .story-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 126, 179, 0.3);
+        }
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-20deg);
+            transition: 0.7s;
+        }
+        .story-card:hover::before {
+            left: 150%;
+        }
+        .story-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-1);
+        }
+        .story-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #d1d1e0;
+        }
+
+        /* --- INTERACTIVE REVEAL SECTION --- */
+        .interactive-section {
+            text-align: center;
+            z-index: 10;
+        }
+        .heart-btn {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(255, 126, 179, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .heart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 126, 179, 0.6);
+        }
+        
+        .final-message {
+            display: none;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease-in-out;
+            margin-top: 2rem;
+        }
+        .final-message.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+        .final-message h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* --- PARTICLES --- */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            background: var(--accent-1);
+            animation: fall linear forwards;
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-15px) translateX(-50%); }
+            60% { transform: translateY(-7px) translateX(-50%); }
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Interactive Hover states for custom cursor */
+        a, button, .interactive-hover {
+            cursor: none;
+        }
+
+        @media (max-width: 768px) {
+            .story-card { padding: 2rem; width: 90%; }
+            .cursor-dot, .cursor-outline { display: none; } /* Disable custom cursor on mobile */
+            * { cursor: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Animated Background -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- 1. Hero Landing -->
+    <section class="hero">
+        <h1>Happy Birthday,<br><span class="title-gradient">Zahuu 🌸</span></h1>
+        <p>A journey created just for you...</p>
+        <div class="scroll-indicator">
+            <div></div>
+        </div>
+    </section>
+
+    <!-- 2. Emotional Journey (Scroll Triggered) -->
+    <section>
+        <div class="story-card reveal">
+            <h2>To my favorite person...</h2>
+            <p>From the very first moment our worlds collided, everything changed. The colors around me grew brighter, and everyday moments suddenly felt like magic because you were in them.</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="story-card reveal">
+            <h2>You are my art.</h2>
+            <p>I look at you and see everything I've ever wanted. Your smile, your warmth, and the way you care make me the luckiest person alive. You're not just my girlfriend; you're my peace and my greatest adventure.</p>
+        </div>
+    </section>
+
+    <!-- 3. Interactive Reveal (The Gift) -->
+    <section class="interactive-section reveal">
+        <button class="heart-btn interactive-hover" id="revealBtn">Unlock Your Wish 💖</button>
+        
+        <div class="story-card final-message" id="finalMessage">
+            <h1 class="title-gradient">I Love You, Zahuu</h1>
+            <p>On this beautiful day, I just want to remind you how deeply and endlessly you are loved. May this year bring you as much happiness as you bring to my life every single day.</p>
+            <br>
+            <p><i>Forever yours. Happy Birthday, my beautiful flower. 🌸✨</i></p>
+        </div>
+    </section>
+
+    <!-- Script for Interactivity, Animations & Cursor -->
+    <script>
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Adding a slight delay to the outline for smoothness
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 150, fill: "forwards" });
+        });
+
+        // Hover effect for interactive elements
+        const interactiveElements = document.querySelectorAll('.interactive-hover, button');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(255, 126, 179, 0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Scroll Intersection Observer for Reveal Animations
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealOptions = {
+            threshold: 0.3,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if(!entry.isIntersecting) return;
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target);
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+
+        // Interactive Button & Particle Burst
+        const revealBtn = document.getElementById('revealBtn');
+        const finalMessage = document.getElementById('finalMessage');
+
+        function createParticles(x, y) {
+            const particleCount = 50;
+            const colors = ['#ff7eb3', '#ff758c', '#ffffff', '#ffb8d2'];
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Randomize properties
+                const size = Math.random() * 15 + 5;
+                const destX = x + (Math.random() - 0.5) * 400;
+                const destY = y + (Math.random() - 0.5) * 400;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.background = color;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.boxShadow = `0 0 ${size}px ${color}`;
+                
+                // Using Web Animations API for the burst
+                const animation = particle.animate([
+                    { transform: `translate(0, 0) scale(1)`, opacity: 1 },
+                    { transform: `translate(${destX - x}px, ${destY - y}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 1000 + 1000,
+                    easing: 'cubic-bezier(0, .9, .57, 1)',
+                    fill: 'both'
+                });
+
+                document.body.appendChild(particle);
+
+                // Cleanup
+                animation.onfinish = () => particle.remove();
+            }
+        }
+
+        revealBtn.addEventListener('click', (e) => {
+            // Get click coordinates
+            const rect = revealBtn.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+
+            // Trigger explosion
+            createParticles(x, y);
+
+            // Hide Button & Show Message
+            revealBtn.style.display = 'none';
+            setTimeout(() => {
+                finalMessage.classList.add('show');
+                // Scroll slightly to make sure the message is centered
+                finalMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+            
+            // Continuous gentle falling petals after unlocking
+            setInterval(createFallingPetal, 400);
+        });
+
+        // Continuous falling petals function
+        function createFallingPetal() {
+            const petal = document.createElement('div');
+            petal.innerHTML = '🌸';
+            petal.style.position = 'fixed';
+            petal.style.top = '-50px';
+            petal.style.left = `${Math.random() * 100}vw`;
+            petal.style.fontSize = `${Math.random() * 15 + 10}px`;
+            petal.style.opacity = Math.random() * 0.5 + 0.3;
+            petal.style.pointerEvents = 'none';
+            petal.style.zIndex = '999';
+            
+            document.body.appendChild(petal);
+
+            const duration = Math.random() * 5000 + 5000;
+            
+            const animation = petal.animate([
+                { transform: `translateY(0) rotate(0deg) translateX(0)` },
+                { transform: `translateY(110vh) rotate(360deg) translateX(${Math.random() * 200 - 100}px)` }
+            ], {
+                duration: duration,
+                easing: 'linear'
+            });
+
+            animation.onfinish = () => petal.remove();
+        }
+    </script>
+</body>
+</html>
